@@ -283,7 +283,7 @@
 
   <div class="container" id="mainContent">
     <div class="video-section">
-      <video id="promoVideo" preload="auto" poster="image/preview.png" playsinline>
+      <video id="promoVideo" preload="auto" poster="images/preview.png" playsinline webkit-playsinline muted disablePictureInPicture controlsList="nodownload nofullscreen noplaybackrate">
         <source src="video/promo.mp4" type="video/mp4">
         Ваш браузер не поддерживает видео.
       </video>
@@ -319,6 +319,8 @@
     const mainContent = document.getElementById('mainContent');
     const tgInstruction = document.getElementById('tgInstruction');
     const tgOpenBtn = tgInstruction.querySelector('.tg-button');
+    video.playsInline = true;
+    video.webkitPlaysInline = true;
 
     // Ждём полной загрузки контента
     window.addEventListener('load', () => {
