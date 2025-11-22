@@ -219,6 +219,55 @@
       font-size: clamp(14px, 4.5vw, 17px);
       padding: 12px 26px;
     }
+    .site-logo {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .site-logo img {
+      width: clamp(120px, 28vw, 180px);
+      height: auto;
+      animation: logoFloat 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(0, 183, 255, 0.6)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.25));
+      display: block;
+    }
+
+    .site-logo::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 160%;
+      height: 160%;
+      background: radial-gradient(closest-side, rgba(0, 183, 255, 0.25), rgba(0, 183, 255, 0) 60%);
+      filter: blur(12px);
+      animation: glowPulse 4s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes logoFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .site-logo {
+        top: clamp(36px, 10vw, 64px);
+      }
+      .site-logo img {
+        width: clamp(160px, 52vw, 240px);
+      }
+    }
   </style>
 </head>
 <body>
@@ -226,6 +275,10 @@
   <div id="preloader">
     <div class="plane"></div>
     <div class="loading-text">Загрузка Aviamasters...</div>
+  </div>
+
+  <div class="site-logo">
+    <img src="https://luckybear.ai///_next/static/media/home_logo.a028b260.png" alt="LuckyBear">
   </div>
 
   <div class="container" id="mainContent">
@@ -250,12 +303,22 @@
     </div>
   </div>
 
+  <div class="popup" id="tgInstruction">
+    <div class="popup-content">
+      <h3>Открой ссылку правильно</h3>
+      <p>Чтобы открыть ссылку, зажми кнопку и тыкни на открывшийся сайт.</p>
+      <a href="https://t.me/+_k4mc4SGDTdjMDYy" target="_blank" class="tg-button" data-allow-direct="true">ЗАЖМИ МЕНЯ</a>
+    </div>
+  </div>
+
   <script>
     const video = document.getElementById('promoVideo');
     const playBtn = document.getElementById('playBtn');
     const popup = document.getElementById('popup');
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('mainContent');
+    const tgInstruction = document.getElementById('tgInstruction');
+    const tgOpenBtn = tgInstruction.querySelector('.tg-button');
 
     // Ждём полной загрузки контента
     window.addEventListener('load', () => {
@@ -279,6 +342,17 @@
         video.play();
       });
       setTimeout(() => popup.classList.add('active'), 13000);
+    });
+
+    document.querySelectorAll('.tg-button').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const allow = link.getAttribute('data-allow-direct') === 'true';
+        if (allow) return;
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        tgOpenBtn.setAttribute('href', href);
+        tgInstruction.classList.add('active');
+      });
     });
   </script>
 </body>
